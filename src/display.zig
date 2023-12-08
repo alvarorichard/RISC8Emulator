@@ -9,7 +9,7 @@ window: *c.SDL_Window,
 open: bool,
 
 pub fn create(
-    title: []const u8,
+    title: [*]const u8,
     width: i32,height: i32,
 ) !Self {
 if(c.SDL_Init(c.SDL_INIT_VIDEO | c.SDL_INIT_AUDIO) != 0) {
