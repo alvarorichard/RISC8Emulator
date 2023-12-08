@@ -12,11 +12,9 @@ pub fn create(
     title: []const u8,
     width: i32,height: i32,
 ) !Self {
-    _ = height;
-    _ = width;
-    _ = title;
-    if(c.SDL_Init(c.SDL_INIT_VIDEO | c.SDL_INIT_AUDIO) != 0) {
+if(c.SDL_Init(c.SDL_INIT_VIDEO | c.SDL_INIT_AUDIO) != 0) {
   return error.SDLInitializationFailed;
+}
   var window = c.SDL_CreateWindow(
   title,
   c.SDL_WINDOWPOS_UNDEFINED,c.SDL_WINDOWPOS_UNDEFINED,
@@ -26,18 +24,16 @@ pub fn create(
   c.SDL_Quit();
   return error.SDLWindowCreationFailed;
 };
-  _ = window;
   return Self{
     .window = window,
     .open = true,
  };
+
 }
-
-
-pub fn free(self: *Self) void{
+//displayb livre 
+pub fn free(self: *Self) void {
     c.SDL_DestroyWindow(self.window);
     c.SDL_Quit();
-
 }
 
 pub fn input (self: *Self) void{
@@ -51,7 +47,7 @@ pub fn input (self: *Self) void{
         }
     }
 }
-}
+
 };
 
 
