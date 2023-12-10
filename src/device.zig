@@ -27,14 +27,19 @@ pub const Device = struct {
   
   // cria um novo dispositivo
   pub fn create (allocator:std.mem.Allocator) !Self{
-    _ = allocator;
+    var memory = try allocator.alloc(u8, 4096);
+    @memcpy(memory[0x000..0x050], DEFAULT_FONT[0..80]);
+    return Self{
+      .allocator = allocator,
+      .memory = memory,
+    };
 
   }
 
   // libera o dispositivo
 
 pub fn free (self: *Self) void {
-  _ = self;
+  self.allocator.free(self.memory);
 
 }
 
@@ -42,17 +47,29 @@ pub fn free (self: *Self) void {
 // carrega raw ROM data para a memória
 
   pub fn loadProgramIntoMemory(self: *Self, program: []u8) void {
-    _ = program;
-    _ = self;
+      @memcpy(self.memory[0x200..0x200 + program.len], program[0..program.len]);
 
   }
 
   // carrega a rom data de um arquivo
   pub fn loadRomFromFile(self: *Self, path: []const u8) bool {
-    _ = path;
-    _ = self;
+    var file = std.fs.cwd().openFile(path, .{ } catch return false);
+    defer file.close();
+
+    var stat = file.stat() catch return false;
+    if (stat.size > self.memory.len - 0x200) {
+      return false;
+    }
+
+    var buffer = self.allocator.alloc(u8, stat.size) catch return false;
+    defer self.allocator.free(buffer);
+
+    file.reader().read(buffer) catch return false;
+    self.loadProgramIntoMemory(buffer);
+    return true;
 
   }
+
 
 
 };
