@@ -22,7 +22,7 @@ if(!device.loadROM("./roms/blitz.rom")) {
   return;
 }
 
-  // New
+  // Novo
   var bitmap = try Bitmap.create(allocator, 64,32);
   defer bitmap.free();
   //_ = bitmap.setPixel(5,5);
