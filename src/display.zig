@@ -12,6 +12,7 @@ renderer: *c.SDL_Renderer,
 framebuffer: *c.SDL_Texture,
 framebuffer_width: u8,
 framebuffer_height: u8,
+keys: [16]bool,
 
 pub fn create(
     title: [*]const u8,
@@ -56,6 +57,7 @@ return Self {
   .framebuffer_width = framebuffer_width,
   .framebuffer_height = framebuffer_height,
   .open = true,
+  .keys = std.mem.zeroes([16]bool), // New
 };
 
 }
@@ -65,18 +67,59 @@ pub fn free(self: *Self) void {
     c.SDL_Quit();
 }
 
-pub fn input (self: *Self) void{
+pub fn input(self: *Self) void {
     var event: c.SDL_Event = undefined;
-    while (c.SDL_PollEvent(&event) != 0) {
-        switch (event.@"type") {
-            c.SDL_QUIT => {
-                self.open = false;
-            },
+    while(c.SDL_PollEvent(&event) != 0) {
+      switch(event.@"type") {
+        c.SDL_QUIT => {
+          self.open = false;
+        },
+        c.SDL_KEYDOWN => {
+          switch(event.@"key".@"keysym".@"scancode") {
+            c.SDL_SCANCODE_1 => { self.keys[0x1] = true; },
+            c.SDL_SCANCODE_2 => { self.keys[0x2] = true; },
+            c.SDL_SCANCODE_3 => { self.keys[0x3] = true; },
+            c.SDL_SCANCODE_4 => { self.keys[0xC] = true; },
+            c.SDL_SCANCODE_Q => { self.keys[0x4] = true; },
+            c.SDL_SCANCODE_W => { self.keys[0x5] = true; },
+            c.SDL_SCANCODE_E => { self.keys[0x6] = true; },
+            c.SDL_SCANCODE_R => { self.keys[0xD] = true; },
+            c.SDL_SCANCODE_A => { self.keys[0x7] = true; },
+            c.SDL_SCANCODE_S => { self.keys[0x8] = true; },
+            c.SDL_SCANCODE_D => { self.keys[0x9] = true; },
+            c.SDL_SCANCODE_F => { self.keys[0xE] = true; },
+            c.SDL_SCANCODE_Z => { self.keys[0xA] = true; },
+            c.SDL_SCANCODE_X => { self.keys[0x0] = true; },
+            c.SDL_SCANCODE_C => { self.keys[0xB] = true; },
+            c.SDL_SCANCODE_V => { self.keys[0xF] = true; },
             else => {},
-        }
+          }
+        },
+        c.SDL_KEYUP => {
+          switch(event.@"key".@"keysym".@"scancode") {
+            c.SDL_SCANCODE_1 => { self.keys[0x1] = false; },
+            c.SDL_SCANCODE_2 => { self.keys[0x2] = false; },
+            c.SDL_SCANCODE_3 => { self.keys[0x3] = false; },
+            c.SDL_SCANCODE_4 => { self.keys[0xC] = false; },
+            c.SDL_SCANCODE_Q => { self.keys[0x4] = false; },
+            c.SDL_SCANCODE_W => { self.keys[0x5] = false; },
+            c.SDL_SCANCODE_E => { self.keys[0x6] = false; },
+            c.SDL_SCANCODE_R => { self.keys[0xD] = false; },
+            c.SDL_SCANCODE_A => { self.keys[0x7] = false; },
+            c.SDL_SCANCODE_S => { self.keys[0x8] = false; },
+            c.SDL_SCANCODE_D => { self.keys[0x9] = false; },
+            c.SDL_SCANCODE_F => { self.keys[0xE] = false; },
+            c.SDL_SCANCODE_Z => { self.keys[0xA] = false; },
+            c.SDL_SCANCODE_X => { self.keys[0x0] = false; },
+            c.SDL_SCANCODE_C => { self.keys[0xB] = false; },
+            c.SDL_SCANCODE_V => { self.keys[0xF] = false; },
+            else => {},
+          }
+        },
+        else => {},
+      }
     }
-}
-
+  }
 pub fn draw(self: *Self, bitmap: *Bitmap) void {
   if(bitmap.width != self.framebuffer_width) return;
   if(bitmap.height != self.framebuffer_height) return;

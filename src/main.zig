@@ -1,6 +1,7 @@
 const std = @import("std");
 const Display = @import("display.zig").Display;
 const Bitmap = @import("bitmap.zig").Bitmap;    // New
+const Device = @import("device.zig").Device;  
 
 pub fn main() !void {
   var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -25,4 +26,13 @@ pub fn main() !void {
     display.input();
     display.draw(&bitmap); // New
   }
+
+  var device = try Device.create(allocator);
+defer device.free();
+
+if(!device.loadROM("./roms/blitz.rom")) {
+  std.debug.print("Failed to load CHIP-8 ROM\n", .{});
+  return;
+}
+
 }
