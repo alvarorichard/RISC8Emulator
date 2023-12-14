@@ -1,6 +1,6 @@
 const std = @import("std");
 const Display = @import("display.zig").Display;
-const Bitmap = @import("bitmap.zig").Bitmap;    // New
+const Bitmap = @import("bitmap.zig").Bitmap;    
 const Device = @import("device.zig").Device;
 const CPU = @import("cpu.zig").CPU;  
 
@@ -17,7 +17,7 @@ pub fn main() !void {
     var device = try Device.create(allocator);
 defer device.free();
 
-if(!device.loadROM("./roms/blitz.rom")) {
+if(!device.loadROM("/home/krone/RISC8Emulator/src/roms/tetris.rom")) {
   std.debug.print("Erro ao carregar  CHIP-8 ROM\n", .{});
   return;
 }
