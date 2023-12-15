@@ -50,18 +50,7 @@ zig run main.zig
  zig build
  ```
 
- ## Configuration
 
-The emulator adheres to the original hardware specifications of the CHIP-8:
-
-- **Memory**: 4 kilobytes of RAM.
-- **Display**: 64x32 pixel monochrome display.
-- **Program Counter (PC)**: Points to the current instruction in memory.
-- **Index (I)**: 16-bit index register for memory locations.
-- **Stack**: A stack for 16-bit addresses, used in function calls and returns.
-- **Delay Timer**: 8-bit timer, decrements at 60 Hz until 0.
-- **Sound Timer**: Functions like the delay timer, but emits a beep if nonzero.
-- **Registers**: 16 8-bit general-purpose registers (V0-VF).
 
 ## Contributing
 
