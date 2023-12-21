@@ -18,13 +18,13 @@
 - `display.zig`: Handles the CHIP-8's monochrome display.
 - `device.zig`: Integrates components like memory and display.
 - `cpu.zig`: Responsible for the CPU functionality and instruction execution.
-- **ROM Requirement**: To run a game, a CHIP-8 ROM file must be added. This emulator does not come with any preloaded games, so you need to provide your own ROM.
 - **`c.zig` File**: This file is used to import the SDL2 library from C, facilitating graphical output and input handling.
 - `bitmap.zig`: Manages bitmap operations for graphics.
 
 ## Prerequisites
 - Zig programming language version 0.11 installed on your system.
-- Familiarity with Zig language and CHIP-8 architecture.
+- **ROM Requirement**: To run a game, a CHIP-8 ROM file must be added. This emulator does not come with any preloaded games, so you need to provide your own ROM.
+
 
 ## Installation
 1. Clone the repository:
@@ -41,12 +41,12 @@ cd RISC8Emulator
 
 Execute the main.zig file with the Zig compiler to run the emulator:
 
-```bash 
+```zig
 zig run main.zig
 ```
  or just run :
 
- ```c
+ ```zig
  zig build
  ```
 
