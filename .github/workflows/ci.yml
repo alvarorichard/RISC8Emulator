@@ -9,14 +9,23 @@ jobs:
       matrix:
         runs-on: [ubuntu-latest]
     runs-on: ${{ matrix.runs-on }}
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
           fetch-depth: 0
+      
       - uses: goto-bus-stop/setup-zig@v2
         with:
           version: 0.11.0
-      
-      - name: Build Summary
-        run: zig build --summary all -freference-trace
+
+      # Install SDL2
+      - name: Install SDL2
+        run: sudo apt-get update && sudo apt-get install libsdl2-dev
+
+      # Build with Zig
+      - name: Build with Zig and SDL2
+        run: zig build
+
+      # Additional commands can be added here
