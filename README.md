@@ -1,6 +1,11 @@
-# RISC8Emulator
+<p align="center">
+  <img src="https://github.com/VitorCarvalho67/RISC8Emulator/assets/102667323/8537324d-5be0-4569-924c-25f40feb63a2" alt="Imagem logo" />
+</p>
 
-## Overview
+# RISC8Emulator
+[![GitHub license](https://img.shields.io/github/license/alvarorichard/RISC8Emulator)](alvarorichard/RISC8Emulator/blob/master/LICENSE) ![GitHub stars](https://img.shields.io/github/languages/top/alvarorichard/RISC8Emulator) ![GitHub stars](https://img.shields.io/github/repo-size/alvarorichard/RISC8Emulator)
+
+
 **RISC8Emulator** is a software recreation of the CHIP-8 system, a simple computer from the mid-1970s primarily used for playing video games. Written in Zig, a modern programming language, this emulator replicates the architecture and functionality of the original CHIP-8, offering a unique experience for retro gaming and computer history enthusiasts.
 
 ## Features
