@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/VitorCarvalho67/RISC8Emulator/assets/102667323/8537324d-5be0-4569-924c-25f40feb63a2" alt="Imagem logo" />
+  <img src="https://github.com/alvarorichard/RISC8Emulator/assets/102667323/e412c39b-04ce-4fa0-8f4f-1b180451694a" alt="Imagem logo" />
 </p>
 
 # RISC8Emulator
