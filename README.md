@@ -1,3 +1,11 @@
+<h4 align="center">
+    <p>
+        <b>English</b> |
+        <a href="https://github.com/alvarorichard/RISC8Emulator/blob/main/README_pt-BR.md">Рortuguês</a>
+    </p>
+</h4>
+
+
 <p align="center">
   <img src="https://github.com/alvarorichard/RISC8Emulator/assets/102667323/e412c39b-04ce-4fa0-8f4f-1b180451694a" alt="Imagem logo" />
 </p>
