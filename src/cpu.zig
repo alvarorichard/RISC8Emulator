@@ -61,7 +61,7 @@ while(i < self.speed) : (i += 1){
     if(!self.paused) {
          // Os opcodes do CHIP-8 têm dois bytes de comprimento
         // .* é usado para desreferenciar ponteiros em Zig
-        var opcode: u16 = (@as(u16, self.memory.*[self.pc]) << 8 | @as(u16, self.memory.*[self.pc+1]));
+        const opcode: u16 = (@as(u16, self.memory.*[self.pc]) << 8 | @as(u16, self.memory.*[self.pc+1]));
         self.executeInstruction(opcode);
       }
     
@@ -103,7 +103,7 @@ fn stackPush(self:*Self,address:u16) void{
 fn stackPop(self:*Self) u16{
     if (self.stack_idx == 0) return 0;
 
-   var value = self.stack[self.stack_idx-1];
+   const value = self.stack[self.stack_idx-1];
     self.stack_idx -= 1;
     return value;
 
@@ -114,8 +114,8 @@ fn stackPop(self:*Self) u16{
     fn executeInstruction(self: *Self, opcode: u16) void {
     self.pc += 2;
 
-    var x = (opcode & 0x0F00) >> 8;
-    var y = (opcode & 0x00F0) >> 4;
+    const x = (opcode & 0x0F00) >> 8;
+    const y = (opcode & 0x00F0) >> 4;
 
     // Grande switch de opcodes
     switch(opcode & 0xF000) {
@@ -140,7 +140,7 @@ fn stackPop(self:*Self) u16{
           0x2 => { self.v[x] &= self.v[y]; self.v[0xF] = 0; },
           0x3 => { self.v[x] ^= self.v[y]; self.v[0xF] = 0; },
           0x4 => {
-            var sum: u32 = (@as(u32, self.v[x]) + @as(u32, self.v[y]));
+            const sum: u32 = (@as(u32, self.v[x]) + @as(u32, self.v[y]));
             self.v[x] = @as(u8, @truncate(sum));
 
             self.v[0xF] = 0;
@@ -148,8 +148,8 @@ fn stackPop(self:*Self) u16{
               self.v[0xF] = 1;
           },
           0x5 => {
-            var vX = self.v[x];
-            var vY = self.v[y];
+            const vX = self.v[x];
+            const vY = self.v[y];
 
             self.v[x] = vX -% vY;
 
@@ -158,7 +158,7 @@ fn stackPop(self:*Self) u16{
               self.v[0xF] = 1;
           },
           0x6 => {
-            var vY = self.v[y];
+            const vY = self.v[y];
 
             self.v[x] = vY >> 1;
 
@@ -167,8 +167,8 @@ fn stackPop(self:*Self) u16{
               self.v[0xF] = 1;
           },
           0x7 => {
-            var vX = self.v[x];
-            var vY = self.v[y];
+            const vX = self.v[x];
+            const vY = self.v[y];
 
             self.v[x] = vY -% vX;
 
@@ -177,7 +177,7 @@ fn stackPop(self:*Self) u16{
               self.v[0xF] = 1;
           },
           0xE => {
-            var vY = self.v[y];
+            const vY = self.v[y];
 
             self.v[x] = vY << 1;
 
@@ -194,18 +194,23 @@ fn stackPop(self:*Self) u16{
       0xC000 => {
         //Obter o sistema operacional para gerar uma semente aleatória
         var seed: u64 = 11111;
-        std.os.getrandom(std.mem.asBytes(&seed)) catch {};
+        std.posix.getrandom(std.mem.asBytes(&seed)) catch {};
 
         // Generar um número aleatório
-        var rnd = std.rand.DefaultPrng.init(seed);
-        var num = rnd.random().int(u8);
+        // const rnd = std.rand.DefaultPrng.init(seed);
+        // const num = rnd.random().int(u8);
+
+        var prng = std.rand.DefaultPrng.init(seed);
+        const num = prng.random().int(u8);
+
+
 
         // armazena o número aleatório em Vx
         self.v[x] = num & (@as(u8, @truncate(opcode)) & 0xFF);
       },
       0xD000 => {
-        var width: u16 = 8; // ALL sprite are 8 wide
-        var height = (opcode & 0xF);
+      const width: u16 = 8; // ALL sprite are 8 wide
+        const height = (opcode & 0xF);
 
         // Uma das poucas instruções onde é aceitável definir isso primeiro
         self.v[0xF] = 0;
@@ -217,8 +222,8 @@ fn stackPop(self:*Self) u16{
           var col: u8 = 0;
           while(col < width) : (col += 1) {
             // Envolver as coordenadas x e y ao redor da tela se estiverem fora dos limites
-            var px = self.v[x] % self.bitmap.width;
-            var py = self.v[y] % self.bitmap.height;
+            const px = self.v[x] % self.bitmap.width;
+            const py = self.v[y] % self.bitmap.height;
 
             // Não envolvemos pixels que estão fora dos limites
             if(px + col >= self.bitmap.width) continue;

@@ -56,10 +56,10 @@ pub fn loadROM(self: *Self, path: []const u8) bool {
     var file = std.fs.cwd().openFile(path, .{}) catch return false;
     defer file.close();
 
-    var stat = file.stat() catch return false;
+    const stat = file.stat() catch return false;
     if(stat.size > self.memory.len - 0x200) return false;
 
-    var buffer = self.allocator.alloc(u8, stat.size) catch return false;
+    const buffer = self.allocator.alloc(u8, stat.size) catch return false;
     defer self.allocator.free(buffer);
 
     file.reader().readNoEof(buffer) catch return false;

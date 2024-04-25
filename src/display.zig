@@ -22,7 +22,7 @@ pub fn create(
 if(c.SDL_Init(c.SDL_INIT_VIDEO | c.SDL_INIT_AUDIO) != 0) {
   return error.SDLInitializationFailed;
 }
-  var window = c.SDL_CreateWindow(
+  const window = c.SDL_CreateWindow(
   title,
   c.SDL_WINDOWPOS_UNDEFINED,c.SDL_WINDOWPOS_UNDEFINED,
   width,height,
@@ -32,12 +32,12 @@ if(c.SDL_Init(c.SDL_INIT_VIDEO | c.SDL_INIT_AUDIO) != 0) {
   return error.SDLWindowCreationFailed;
 };
 
-var renderer = c.SDL_CreateRenderer(window,-1,c.SDL_RENDERER_ACCELERATED) orelse {
+const renderer = c.SDL_CreateRenderer(window,-1,c.SDL_RENDERER_ACCELERATED) orelse {
 c.SDL_DestroyWindow(window);
 c.SDL_Quit();
 return error.SDLRendererCreationFailed;
 };
-var framebuffer = c.SDL_CreateTexture(
+const framebuffer = c.SDL_CreateTexture(
     renderer,
     c.SDL_PIXELFORMAT_ARGB8888,
     c.SDL_TEXTUREACCESS_STREAMING,
@@ -155,17 +155,17 @@ pub fn draw(self: *Self, bitmap: *Bitmap) void {
   while(y < self.framebuffer_height) : (y += 1) {
     var x:u8 = 0;
     while(x < self.framebuffer_width) : (x += 1) {
-      var index: usize = @as(usize, y) * @divExact(@as(usize, @intCast(pitch)), @sizeOf(u32)) + @as(usize, x);
-      var color = if(bitmap.getPixel(x,y) == 1) color_value else clear_value;
+      const index: usize = @as(usize, y) * @divExact(@as(usize, @intCast(pitch)), @sizeOf(u32)) + @as(usize, x);
+      const color = if(bitmap.getPixel(x,y) == 1) color_value else clear_value;
 
       // It would probably be better to
       // use SDL_MapRGBA here but it was
       // giving me errors for some reason
       // and I'm too lazy to figure it out
-      var r: u32 = @as(u32, color.r) << 24;
-      var g: u32 = @as(u32, color.g) << 16;
-      var b: u32 = @as(u32, color.b) << 8;
-      var a: u32 = @as(u32, color.a) << 0;
+      const r: u32 = @as(u32, color.r) << 24;
+      const g: u32 = @as(u32, color.g) << 16;
+      const b: u32 = @as(u32, color.b) << 8;
+      const a: u32 = @as(u32, color.a) << 0;
 
       upixels[index] = r | g | b | a;
     }
