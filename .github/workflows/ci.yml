@@ -23,7 +23,7 @@ jobs:
       
       - uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.11.0
+          version: 0.12.0
 
       # Install SDL2
       - name: Install SDL2
