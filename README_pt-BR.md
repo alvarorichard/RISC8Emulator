@@ -27,7 +27,7 @@
 - `bitmap.zig`: Gerencia operações de bitmap para gráficos.
 
 ## Pré-requisitos
-- Linguagem de programação Zig versão 0.11 instalada no seu sistema.
+- Linguagem de programação Zig versão 0.12 instalada no seu sistema.
 - **Requisito de ROM**: Para rodar um jogo, um arquivo de ROM CHIP-8 deve ser adicionado. Este emulador não vem com nenhum jogo pré-carregado, portanto, você precisa fornecer sua própria ROM.
 
 ## Instalação
