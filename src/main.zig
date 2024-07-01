@@ -18,7 +18,7 @@ pub fn main() !void {
 defer device.free();
 
 // edit this line to load your rom
-if(!device.loadROM("/home/krone/RISC8Emulator/src/roms/tetris.rom")) {
+if(!device.loadROM("/home/krone/RISC8Emulator/roms/tetris.rom")) {
   std.debug.print("Erro ao carregar  CHIP-8 ROM\n", .{});
   return;
 }
