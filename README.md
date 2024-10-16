@@ -35,7 +35,7 @@
 - `bitmap.zig`: Manages bitmap operations for graphics.
 
 ## Prerequisites
-- Zig programming language version 0.12 installed on your system.
+- Zig programming language installed on your system.
 - **ROM Requirement**: To run a game, a CHIP-8 ROM file must be added. This emulator does not come with any preloaded games, so you need to provide your own ROM.
 
 
