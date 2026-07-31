@@ -23,15 +23,17 @@ pub const Device = struct {
     const Self = @This();
 
     allocator: std.mem.Allocator,
-    memory: []u8,  // ram para emulador 
-  
+    io: std.Io,
+    memory: []u8,  // ram para emulador
+
   // cria um novo dispositivo
- pub fn create(allocator: std.mem.Allocator) !Self {
+ pub fn create(allocator: std.mem.Allocator, io: std.Io) !Self {
     var memory = try allocator.alloc(u8, 4096);
     @memcpy(memory[0x000..0x050], DEFAULT_FONT[0..80]);
 
     return Self {
       .allocator = allocator,
+      .io = io,
       .memory = memory,
     };
   }
@@ -53,16 +55,9 @@ pub fn free (self: *Self) void {
 
   // carrega a rom data de um arquivo
 pub fn loadROM(self: *Self, path: []const u8) bool {
-    var file = std.fs.cwd().openFile(path, .{}) catch return false;
-    defer file.close();
-
-    const stat = file.stat() catch return false;
-    if(stat.size > self.memory.len - 0x200) return false;
-
-    const buffer = self.allocator.alloc(u8, stat.size) catch return false;
+    const limit = std.Io.Limit.limited(self.memory.len - 0x200);
+    const buffer = std.Io.Dir.cwd().readFileAlloc(self.io, path, self.allocator, limit) catch return false;
     defer self.allocator.free(buffer);
-
-    file.reader().readNoEof(buffer) catch return false;
 
     self.loadProgramIntoMemory(buffer);
 

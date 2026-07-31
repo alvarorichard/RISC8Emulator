@@ -8,19 +8,23 @@ pub fn build(b: *std.Build) void {
     
     const optimize = b.standardOptimizeOption(.{});
 
-    const exe = b.addExecutable(.{
-        .name = "RISC8Emulator",
+    const exe_mod = b.createModule(.{
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    exe_mod.linkSystemLibrary("SDL2", .{});
+    exe_mod.link_libc = true;
 
-    
+    const exe = b.addExecutable(.{
+        .name = "RISC8Emulator",
+        .root_module = exe_mod,
+    });
+
+
     b.installArtifact(exe);
-    exe.linkSystemLibrary("SDL2");
-    exe.linkLibC();
   
 
     
@@ -40,9 +44,11 @@ pub fn build(b: *std.Build) void {
 
     
     const unit_tests = b.addTest(.{
-        .root_source_file =  b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/main.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
 
     const run_unit_tests = b.addRunArtifact(unit_tests);

@@ -1,5 +1,9 @@
 const std = @import("std");
-const c = @import("c.zig");
+const c = @cImport({
+    // Zig 0.16 translate-c (aro) can't handle Apple's arm_neon.h intrinsics.
+    @cDefine("SDL_DISABLE_ARM_NEON_H", "1");
+    @cInclude("SDL2/SDL.h");
+});
 const Bitmap = @import("bitmap.zig").Bitmap;
 
 pub const Display = struct{

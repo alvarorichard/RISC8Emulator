@@ -23,8 +23,9 @@
 - `display.zig`: Gerencia o display monocromático do CHIP-8.
 - `device.zig`: Integra componentes como memória e display.
 - `cpu.zig`: Responsável pela funcionalidade da CPU e execução de instruções.
-- **Arquivo `c.zig`**: Este arquivo é usado para importar a biblioteca SDL2 de C, facilitando a saída gráfica e o manuseio de entrada.
 - `bitmap.zig`: Gerencia operações de bitmap para gráficos.
+
+O SDL2 é importado diretamente de C via `@cImport` dentro de `display.zig`.
 
 ## Pré-requisitos
 - Linguagem de programação Zig versão 0.12 instalada no seu sistema.
@@ -43,17 +44,29 @@ cd RISC8Emulator
 
 ## Executando o Emulador
 
-Execute o arquivo main.zig com o compilador Zig para rodar o emulador:
+Compile o projeto:
 
-```zig  
-zig run main.zig
-```
-
-ou apenas execute:
-
-```zig
+```sh
 zig build
 ```
+
+Depois execute passando a ROM como argumento:
+
+```sh
+zig build run -- caminho/do/jogo.rom
+```
+
+Ou rode o binário gerado diretamente:
+
+```sh
+./zig-out/bin/RISC8Emulator caminho/do/jogo.rom
+```
+
+Se iniciar sem informar uma ROM, o emulador pede o caminho de forma
+interativa — basta digitar ou arrastar o arquivo para o terminal e pressionar
+Enter (Enter vazio encerra).
+
+> Requer Zig 0.16 e SDL2.
 ## Contribuindo
 
 Contribuições para melhorar ou aprimorar o emulador são sempre bem-vindas. Por favor, siga o processo padrão de solicitação de pull para contribuições.

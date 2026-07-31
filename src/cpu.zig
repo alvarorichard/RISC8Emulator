@@ -8,6 +8,7 @@ pub const CPU = struct {
     memory: *[]u8,
     bitmap: *Bitmap,
     display: *Display,
+    io: std.Io,
     pc: u16,
     i: u16,
     dtimer: u8,
@@ -23,11 +24,13 @@ pub const CPU = struct {
         memory: *[]u8,
         bitmap: *Bitmap,
         display: *Display,
+        io: std.Io,
     ) Self {
         return Self{
             .memory = memory,
             .bitmap = bitmap,
             .display = display,
+            .io = io,
             .pc = 0x200,
             .i = 0,
             .dtimer = 0,
@@ -162,7 +165,7 @@ pub const CPU = struct {
             0xB000 => { self.pc = (opcode & 0xFFF) + self.v[0]; },
             0xC000 => {
                 var seed: u64 = 11111;
-                std.posix.getrandom(std.mem.asBytes(&seed)) catch {};
+                self.io.random(std.mem.asBytes(&seed));
 
                 var prng = std.Random.DefaultPrng.init(seed);
                 const num = prng.random().int(u8);
